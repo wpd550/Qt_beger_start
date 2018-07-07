@@ -52,11 +52,6 @@ void MainWindow::open()
 #endif
 
     setMessageBox();
-
-
-
-
-
 }
 
 void MainWindow::setMessageBox()
