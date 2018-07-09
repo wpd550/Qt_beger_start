@@ -51,10 +51,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../singlaAndSlot/main.cpp \
-		../singlaAndSlot/mainwindow.cpp moc_mainwindow.cpp
+		../singlaAndSlot/mainwindow.cpp \
+		../singlaAndSlot/newpaple.cpp \
+		../singlaAndSlot/reader.cpp moc_mainwindow.cpp \
+		moc_newpaple.cpp \
+		moc_reader.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		newpaple.o \
+		reader.o \
+		moc_mainwindow.o \
+		moc_newpaple.o \
+		moc_reader.o
 DIST          = ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/qdevice.pri \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/device_config.prf \
@@ -192,6 +200,7 @@ DIST          = ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_pre.p
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_post.prf \
+		../singlaAndSlot/.qmake.stash \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/toolchain.prf \
@@ -219,8 +228,12 @@ DIST          = ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_pre.p
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exceptions.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/yacc.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/lex.prf \
-		../singlaAndSlot/singlaAndSlot.pro ../singlaAndSlot/mainwindow.h ../singlaAndSlot/main.cpp \
-		../singlaAndSlot/mainwindow.cpp
+		../singlaAndSlot/singlaAndSlot.pro ../singlaAndSlot/mainwindow.h \
+		../singlaAndSlot/newpaple.h \
+		../singlaAndSlot/reader.h ../singlaAndSlot/main.cpp \
+		../singlaAndSlot/mainwindow.cpp \
+		../singlaAndSlot/newpaple.cpp \
+		../singlaAndSlot/reader.cpp
 QMAKE_TARGET  = singlaAndSlot
 DESTDIR       = 
 TARGET        = singlaAndSlot.app/Contents/MacOS/singlaAndSlot
@@ -375,6 +388,7 @@ Makefile: ../singlaAndSlot/singlaAndSlot.pro ../../../../Qt5.11.0/5.11.0/clang_6
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/toolchain.prf \
@@ -544,6 +558,7 @@ Makefile: ../singlaAndSlot/singlaAndSlot.pro ../../../../Qt5.11.0/5.11.0/clang_6
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/qt_config.prf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/mac/sdk.prf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/toolchain.prf:
@@ -605,8 +620,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../singlaAndSlot/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../singlaAndSlot/main.cpp ../singlaAndSlot/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../singlaAndSlot/mainwindow.h ../singlaAndSlot/newpaple.h ../singlaAndSlot/reader.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../singlaAndSlot/main.cpp ../singlaAndSlot/mainwindow.cpp ../singlaAndSlot/newpaple.cpp ../singlaAndSlot/reader.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../singlaAndSlot/mainwindow.ui $(DISTDIR)/
 
 
@@ -617,6 +632,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r singlaAndSlot.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -638,15 +654,29 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.11 -Wall -W -dM -E -o moc_predefs.h ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_newpaple.cpp moc_reader.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_newpaple.cpp moc_reader.cpp
 moc_mainwindow.cpp: ../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../singlaAndSlot/mainwindow.h \
 		moc_predefs.h \
 		../../../../Qt5.11.0/5.11.0/clang_64/bin/moc
 	/Users/wudong/Qt5.11.0/5.11.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang -I/Users/wudong/private_project/Qt_beger_start/02_Singla_slot/singlaAndSlot -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib ../singlaAndSlot/mainwindow.h -o moc_mainwindow.cpp
+
+moc_newpaple.cpp: ../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../singlaAndSlot/newpaple.h \
+		moc_predefs.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/bin/moc
+	/Users/wudong/Qt5.11.0/5.11.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang -I/Users/wudong/private_project/Qt_beger_start/02_Singla_slot/singlaAndSlot -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib ../singlaAndSlot/newpaple.h -o moc_newpaple.cpp
+
+moc_reader.cpp: ../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../singlaAndSlot/reader.h \
+		moc_predefs.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/bin/moc
+	/Users/wudong/Qt5.11.0/5.11.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang -I/Users/wudong/private_project/Qt_beger_start/02_Singla_slot/singlaAndSlot -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib ../singlaAndSlot/reader.h -o moc_reader.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -681,11 +711,31 @@ main.o: ../singlaAndSlot/main.cpp ../singlaAndSlot/mainwindow.h \
 mainwindow.o: ../singlaAndSlot/mainwindow.cpp ../singlaAndSlot/mainwindow.h \
 		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../singlaAndSlot/newpaple.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../singlaAndSlot/reader.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../singlaAndSlot/mainwindow.cpp
+
+newpaple.o: ../singlaAndSlot/newpaple.cpp ../singlaAndSlot/newpaple.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o newpaple.o ../singlaAndSlot/newpaple.cpp
+
+reader.o: ../singlaAndSlot/reader.cpp ../singlaAndSlot/reader.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o reader.o ../singlaAndSlot/reader.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_newpaple.o: moc_newpaple.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_newpaple.o moc_newpaple.cpp
+
+moc_reader.o: moc_reader.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_reader.o moc_reader.cpp
 
 ####### Install
 
