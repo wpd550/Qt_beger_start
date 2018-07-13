@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-//    ui->setupUi(this);
+    ui->setupUi(this);
 
      NewPaple newspale("it's happy day!!");
      Reader reader;
@@ -49,4 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_onSureButton_clicked()
+{
+
 }

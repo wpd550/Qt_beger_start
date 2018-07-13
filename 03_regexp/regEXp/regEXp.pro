@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-07-07T15:34:08
+# Project created by QtCreator 2018-07-13T11:22:25
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = singlaAndSlot
+TARGET = regEXp
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,22 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
-    newpaple.cpp \
-    reader.cpp \
-    QImageButton.cpp \
-    tsbutton.cpp \
-    qmybutton.cpp \
-    eventlabel.cpp
+        mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h \
-    newpaple.h \
-    reader.h \
-    QImageButton.h \
-    tsbutton.h \
-    qmybutton.h \
-    eventlabel.h
+        mainwindow.h
 
 FORMS += \
         mainwindow.ui
