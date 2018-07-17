@@ -57,6 +57,7 @@ FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 void FindDialog::findClick()
 {
     QString text = m_fileName_lineEdit->text();
+    //大小写是否忽略
     Qt::CaseSensitivity cs = m_caseCheckbox->isChecked()?Qt::CaseSensitive:Qt::CaseInsensitive;
     if(m_backwardbox->isChecked())
     {

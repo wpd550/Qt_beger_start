@@ -42,7 +42,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         widget = new QWidget(centralWidget);
         widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(70, 90, 301, 71));
+        widget->setGeometry(QRect(70, 90, 286, 72));
         splitter = new QSplitter(widget);
         splitter->setObjectName(QStringLiteral("splitter"));
         splitter->setGeometry(QRect(0, 20, 286, 32));

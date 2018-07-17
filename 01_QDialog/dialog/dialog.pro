@@ -26,11 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    finddialog.cpp
+    finddialog.cpp \
+    gotocelldialog.cpp
 
 HEADERS += \
         mainwindow.h \
-    finddialog.h
+    finddialog.h \
+    gotocelldialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    gotocelldialog.ui
