@@ -51,10 +51,14 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../dialog/main.cpp \
-		../dialog/mainwindow.cpp moc_mainwindow.cpp
+		../dialog/mainwindow.cpp \
+		../dialog/finddialog.cpp moc_mainwindow.cpp \
+		moc_finddialog.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		finddialog.o \
+		moc_mainwindow.o \
+		moc_finddialog.o
 DIST          = ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/qdevice.pri \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/device_config.prf \
@@ -192,6 +196,7 @@ DIST          = ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_pre.p
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_post.prf \
+		../dialog/.qmake.stash \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/toolchain.prf \
@@ -219,8 +224,10 @@ DIST          = ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_pre.p
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exceptions.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/yacc.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/lex.prf \
-		../dialog/dialog.pro ../dialog/mainwindow.h ../dialog/main.cpp \
-		../dialog/mainwindow.cpp
+		../dialog/dialog.pro ../dialog/mainwindow.h \
+		../dialog/finddialog.h ../dialog/main.cpp \
+		../dialog/mainwindow.cpp \
+		../dialog/finddialog.cpp
 QMAKE_TARGET  = dialog
 DESTDIR       = 
 TARGET        = dialog.app/Contents/MacOS/dialog
@@ -375,6 +382,7 @@ Makefile: ../dialog/dialog.pro ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/qt_config.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/mac/sdk.prf \
 		../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/toolchain.prf \
@@ -544,6 +552,7 @@ Makefile: ../dialog/dialog.pro ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/qt_config.prf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/mac/sdk.prf:
 ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/toolchain.prf:
@@ -605,8 +614,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../dialog/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../dialog/main.cpp ../dialog/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../dialog/mainwindow.h ../dialog/finddialog.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../dialog/main.cpp ../dialog/mainwindow.cpp ../dialog/finddialog.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../dialog/mainwindow.ui $(DISTDIR)/
 
 
@@ -617,6 +626,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r dialog.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -638,15 +648,24 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.11 -Wall -W -dM -E -o moc_predefs.h ../../../../Qt5.11.0/5.11.0/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_finddialog.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_finddialog.cpp
 moc_mainwindow.cpp: ../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../dialog/mainwindow.h \
 		moc_predefs.h \
 		../../../../Qt5.11.0/5.11.0/clang_64/bin/moc
 	/Users/wudong/Qt5.11.0/5.11.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang -I/Users/wudong/private_project/Qt_beger_start/01_QDialog/dialog -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib ../dialog/mainwindow.h -o moc_mainwindow.cpp
+
+moc_finddialog.cpp: ../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../dialog/finddialog.h \
+		moc_predefs.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/bin/moc
+	/Users/wudong/Qt5.11.0/5.11.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/mkspecs/macx-clang -I/Users/wudong/private_project/Qt_beger_start/01_QDialog/dialog -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers -I/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/wudong/Qt5.11.0/5.11.0/clang_64/lib ../dialog/finddialog.h -o moc_finddialog.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -681,11 +700,135 @@ main.o: ../dialog/main.cpp ../dialog/mainwindow.h \
 mainwindow.o: ../dialog/mainwindow.cpp ../dialog/mainwindow.h \
 		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QAction \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qaction.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QMenu \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qmenu.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../dialog/mainwindow.cpp
+
+finddialog.o: ../dialog/finddialog.cpp ../dialog/finddialog.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/QtGui \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		../../../../Qt5.11.0/5.11.0/clang_64/lib/QtGui.framework/Headers/qtguiversion.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o finddialog.o ../dialog/finddialog.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_finddialog.o: moc_finddialog.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_finddialog.o moc_finddialog.cpp
 
 ####### Install
 
